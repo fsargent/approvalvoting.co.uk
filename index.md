@@ -19,5 +19,39 @@ The UK's political landscape is changing. There is growing dissatisfaction with 
 ## Get Involved
 There are many ways to get involved in the campaign for approval voting in the UK. You can start by educating yourself and others about the benefits of this voting system.
 
+### UK Organizations
+
 *   [Make Votes Matter](https://www.makevotesmatter.org.uk/)
 *   [Electoral Reform Society](https://www.electoral-reform.org.uk/)
+
+### International Resources
+
+* [Center for Election Science](https://electionscience.org)
+* [Approval.vote](https://approval.vote/)
+* [Nicky Case's Guide to a Better Ballot](https://ncase.me/ballot/)
+
+## See it in Action
+
+To understand the difference, try voting in these two mock elections.
+
+### First-Past-the-Post (Choose One)
+
+<form class="voting-form">
+  <input type="radio" id="fptp-candidate-a" name="fptp-vote" value="a">
+  <label for="fptp-candidate-a">Candidate A</label><br>
+  <input type="radio" id="fptp-candidate-b" name="fptp-vote" value="b">
+  <label for="fptp-candidate-b">Candidate B</label><br>
+  <input type="radio" id="fptp-candidate-c" name="fptp-vote" value="c">
+  <label for="fptp-candidate-c">Candidate C</label><br>
+</form>
+
+### Approval Voting (Pick all you like)
+
+<form class="voting-form">
+  <input type="checkbox" id="approval-candidate-a" name="approval-vote" value="a">
+  <label for="approval-candidate-a">Candidate A</label><br>
+  <input type="checkbox" id="approval-candidate-b" name="approval-vote" value="b">
+  <label for="approval-candidate-b">Candidate B</label><br>
+  <input type="checkbox" id="approval-candidate-c" name="approval-vote" value="c">
+  <label for="approval-candidate-c">Candidate C</label><br>
+</form>

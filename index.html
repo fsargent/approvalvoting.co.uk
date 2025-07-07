@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<!-- saved from url=(0021)https://dearelon.org/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dear Labour: It's Time for Real Electoral Reform</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://unpkg.com/d3-parliament-chart@0.0.6/build/d3-parliament-chart.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #0b0c0c;
+            --header-bg: #1d70b8;
+            --highlight-bg: #ffdd00;
+            --highlight-border: #f47738;
+            --demo-bg: #f3f2f1;
+            --demo-border: #b1b4b6;
+            --hint-bg: #ffdd00;
+            --plurality-color: #d4351c;
+            --approval-color: #00703c;
+            --conservative-color: #1d70b8;
+            --labour-color: #d4351c;
+            --libdem-color: #f47738;
+            --green-color: #00703c;
+            --reform-color: #28a197;
+            --button-demo-bg: #ffdd00;
+            --button-reset-bg: #0b0c0c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+            font-size: 19px;
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--bg-color);
+        }
+
+        .govuk-header {
+            background-color: var(--header-bg);
+            border-bottom: 10px solid transparent;
+        }
+
+        .govuk-header__container {
+            padding: 0 15px;
+            max-width: 1020px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            min-height: 60px;
+        }
+
+        .govuk-header__link--homepage {
+            font-family: Helvetica, arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            font-weight: 400;
+            font-size: 31px;
+            line-height: 31px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .content {
+            padding: 40px;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .content p {
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            font-style: italic;
+            margin: 30px 0;
+        }
+
+        .demo-section {
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .demo-title {
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .demo-subtitle {
+            text-align: center;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .interactive-hint {
+            background: var(--hint-bg);
+            color: var(--text-color);
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            padding: 10px 15px;
+            text-align: center;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .plurality-title {
+            background: var(--plurality-color);
+        }
+
+        .approval-title {
+            background: var(--approval-color);
+        }
+
+        .ballot {
+            background: var(--bg-color);
+            border: 2px solid var(--text-color);
+            padding: 12px;
+            width: 200px;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ballot:hover {
+            border-color: var(--approval-color);
+        }
+
+        .ballot h4 {
+            text-align: center;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            font-size: 0.9em;
+            border-bottom: 1px solid var(--demo-border);
+            padding-bottom: 4px;
+        }
+
+        .candidate-option {
+            margin: 4px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .candidate-option input {
+            margin-right: 6px;
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+
+        .candidate-option label {
+            cursor: pointer;
+            font-size: 0.8em;
+            color: var(--text-color);
+            flex: 1;
+        }
+
+        .results-box {
+            flex: 1;
+            background: var(--bg-color);
+            padding: 20px;
+            border: 2px solid var(--text-color);
+        }
+
+        .results-title {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            padding: 8px;
+            color: white;
+        }
+
+        .plurality-results .results-title {
+            background: var(--plurality-color);
+        }
+
+        .approval-results .results-title {
+            background: var(--approval-color);
+        }
+
+        .proportional-results {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .proportional-results .results-title {
+            background: #8e44ad; /* Keeping purple for now */
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+        }
+
+        .legend-text {
+            font-size: 0.9em;
+        }
+
+        .result-bar {
+            margin: 8px 0;
+            position: relative;
+            height: 25px;
+            background: var(--demo-border);
+            overflow: hidden;
+            border: 1px solid var(--text-color);
+        }
+
+        .bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            transition: all 0.5s ease;
+        }
+
+        .bar-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding-left: 8px;
+            font-weight: bold;
+            font-size: 0.8em;
+            color: white;
+            z-index: 1;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+
+        .bar-text.zero-votes {
+            text-shadow: none;
+            color: var(--text-color);
+        }
+
+        .conservative { background: var(--conservative-color); }
+        .labour { background: var(--labour-color); }
+        .liberal-democrats { background: var(--libdem-color); }
+        .green { background: var(--green-color); }
+        .reform-uk { background: var(--reform-color); }
+
+        .winner-announcement {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1em;
+            margin-top: 15px;
+            padding: 10px;
+        }
+
+        .plurality-winner {
+            background: #ffdde1;
+            color: var(--plurality-color);
+            border: 2px solid var(--plurality-color);
+        }
+
+        .approval-winner {
+            background: #d4f0ed;
+            color: var(--approval-color);
+            border: 2px solid var(--approval-color);
+        }
+
+        .section-header {
+            font-size: 1.8em;
+            color: var(--header-bg);
+            margin: 40px 0 20px 0;
+            border-bottom: 3px solid var(--header-bg);
+            padding-bottom: 10px;
+        }
+
+        .data-link {
+            color: var(--approval-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .data-link:hover {
+            text-decoration: underline;
+        }
+
+        .ballot-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .ballot-box {
+            background: var(--bg-color);
+            padding: 8px 25px 20px 25px;
+            width: 300px;
+        }
+
+        .ballot-box--plurality {
+            border: 3px solid var(--plurality-color);
+        }
+
+        .ballot-box--approval {
+            border: 3px solid var(--approval-color);
+        }
+
+        .ballot-title {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .ballot-title h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.3em;
+        }
+
+        .ballot-title--plurality h3 {
+            color: var(--plurality-color);
+        }
+
+        .ballot-title--approval h3 {
+            color: var(--approval-color);
+        }
+
+        .ballot-subtitle {
+            font-size: 0.9em;
+            margin: 0;
+        }
+
+        .ballot-subtitle--plurality span {
+            color: var(--plurality-color);
+            font-weight: bold;
+        }
+
+        .ballot-subtitle--approval span {
+            color: var(--approval-color);
+            font-weight: bold;
+        }
+
+        .ballot-options {
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .ballot-option {
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
+        }
+
+        .ballot-radio, .ballot-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-color);
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .ballot-radio {
+            border-radius: 50%;
+        }
+
+        .ballot-checkbox {
+            position: relative;
+        }
+
+        .ballot-checkbox--checked {
+            background: var(--text-color);
+        }
+
+        .ballot-checkbox--checked::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            line-height: 16px;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .ballot-label {
+            font-size: 1em;
+            font-weight: normal;
+        }
+
+        .ballot-label--libdem {
+            color: var(--libdem-color);
+            font-weight: bold;
+        }
+
+        .spoiler-warning {
+            background: #ffdde1;
+            color: var(--plurality-color);
+            padding: 12px;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .favorites-message {
+            background: #d4f0ed;
+            color: var(--approval-color);
+            padding: 12px;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header class="govuk-header" role="banner">
+        <div class="govuk-header__container">
+            <a href="#" class="govuk-header__link govuk-header__link--homepage">
+                Dear Kier, adopt Approval Voting</a>
+        </div>
+    </header>
+    <div class="container">
+        <div class="content">
+            <p>
+                The UK's "choose-one" First-Past-the-Post system guarantees a two-party dominance, forcing voters into tactical decisions rather than allowing them to vote for who they truly support.
+            </p>
+
+            <p><strong>The simplest, most effective solution is to let people vote for as many candidates as they approve of. This is Approval Voting.</strong></p>
+
+            <p>This isn't a radical idea. It's a simple change that would empower voters and lead to a more representative government. For the Labour Party, a party of progress and reform, this is a historic opportunity to fix our broken political system.</p>
+
+            <p><strong>For a party that wants to deliver a decade of national renewal, electoral reform is not just an option, it's a necessity.</strong></p>
+
+            <div class="ballot-container">
+                <div class="ballot-box ballot-box--plurality">
+                    <div class="ballot-title ballot-title--plurality">
+                        <h3>CURRENT BALLOT</h3>
+                        <p class="ballot-subtitle ballot-subtitle--plurality">VOTE FOR <span>ONE</span></p>
+                    </div>
+
+                    <div class="ballot-options">
+                        <div class="ballot-option">
+                            <div class="ballot-radio"></div>
+                            <label class="ballot-label">Reform UK</label>
+                        </div>
+                        <div class="ballot-option">
+                            <div class="ballot-radio" ></div>
+                            <label class="ballot-label">Conservative</label>
+                        </div>
+                        <div class="ballot-option">
+                            <div class="ballot-radio"></div>
+                            <label class="ballot-label">Liberal Democrats</label>
+                        </div>
+                        <div class="ballot-option">
+                            <div class="ballot-radio" ></div>
+                            <label class="ballot-label">Labour</label>
+                        </div>
+                        <div class="ballot-option">
+                            <div class="ballot-radio" style="background: var(--text-color);"></div>
+                            <label class="ballot-label">Green</label>
+                        </div>
+                    </div>
+
+                    <div class="spoiler-warning">
+                        ⚠️ Vote for Green Democrats = "Spoiler"
+                    </div>
+                </div>
+
+                <div class="ballot-box ballot-box--approval">
+                    <div class="ballot-title ballot-title--approval">
+                        <h3>APPROVAL BALLOT</h3>
+                        <p class="ballot-subtitle ballot-subtitle--approval">VOTE FOR<br><span>ALL YOU APPROVE OF</span></p>
+                    </div>
+
+                    <div class="ballot-options">
+                        <div class="ballot-option">
+                            <div class="ballot-checkbox"></div>
+                            <label class="ballot-label">Reform UK</label>
+                        </div>
+                        <div class="ballot-option">
+                            <div class="ballot-checkbox"></div>
+                            <label class="ballot-label">Conservative</label>
+                        </div>
+                        <div class="ballot-option">
+                            <div class="ballot-checkbox ballot-checkbox--checked"></div>
+                            <label class="ballot-label">Liberal Democrats</label>
+                        </div>
+                        <div class="ballot-option">
+                            <div class="ballot-checkbox  ballot-checkbox--checked"></div>
+                            <label class="ballot-label">Labour</label>
+                        </div>
+                        <div class="ballot-option">
+                            <div class="ballot-checkbox  ballot-checkbox--checked"></div>
+                            <label class="ballot-label">Green</label>
+                        </div>
+                    </div>
+
+                    <div class="favorites-message">
+                        ✅ Vote for favorites without penalty!
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-header">See The Difference In Action</h2>
+            <p>Same 6 voters, same candidates, dramatically different results</p>
+            <div class="interactive-hint">
+                👇 CLICK THE BALLOTS TO VOTE! Watch how the results change! 👇
+            </div>
+
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 300px;">
+                    <div class="section-title plurality-title" style="margin-bottom: 20px;">Current System (Choose ONE)</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px;" id="plurality-ballots"></div>
+                </div>
+
+                <div style="flex: 1; min-width: 300px;">
+                    <div class="section-title approval-title" style="margin-bottom: 20px;">Approval Voting (Single Winner)</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px;" id="approval-ballots"></div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+                <div style="flex: 1; min-width: 300px;">
+                    <div class="results-box plurality-results">
+                        <div class="results-title">Choose One Results</div>
+                        <div id="plurality-results"></div>
+                        <div id="plurality-winner" class="winner-announcement plurality-winner"></div>
+                    </div>
+                </div>
+                 <div style="flex: 1; min-width: 300px;">
+                    <div class="results-box approval-results">
+                        <div class="results-title">Approval Results</div>
+                        <div id="approval-results"></div>
+                        <div id="approval-winner" class="winner-announcement approval-winner"></div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 30px;">
+                <div class="section-title approval-title" style="margin-bottom: 20px;">Proportional Approval Voting (Parliament)</div>
+                 <div class="results-box proportional-results">
+                    <div id="proportional-chart"></div>
+                    <div id="proportional-legend" class="chart-legend"></div>
+                    <div id="proportional-winner" class="winner-announcement approval-winner"></div>
+                </div>
+            </div>
+
+            <h2 class="section-header">Single-Winner Elections: A Clear Mandate for Mayors</h2>
+            <p>For single-winner elections, like those for directly elected mayors, Approval Voting is the ideal system. It ensures the winner has the broadest possible support from the electorate. Unlike FPTP, where a candidate can win with a small plurality of the vote, Approval Voting elects the candidate who is approved of by the most voters. This leads to winners with a stronger mandate and reduces the "spoiler effect," where voters are afraid to vote for their true favorite for fear of helping their least favorite candidate win.</p>
+
+            <h2 class="section-header">Parliamentary Elections: Proportional Approval Voting</h2>
+            <p>For parliamentary elections, we can use Proportional Approval Voting to achieve a proportionally representative Parliament. This system combines the simplicity of Approval Voting with the fairness of Proportional Representation. Voters can vote for as many candidates as they approve of, and the results are used to elect a proportional slate of representatives. This system ensures that all votes matter and that Parliament accurately reflects the diversity of political opinion in the country.</p>
+
+            <h2 class="section-header">Why the Alternative Vote Failed and What We Can Learn</h2>
+            <p>In 2011, the UK held a referendum on whether to replace First Past the Post with the Alternative Vote (AV). The referendum failed, with 68% voting against the change. However, it's crucial to understand that AV is not a proportional system. It's a majoritarian system that, like FPTP, often fails to produce a Parliament that reflects how people voted. The No campaign successfully branded AV as "a politician's choice," and its failure should not be seen as a rejection of all electoral reform, but rather a rejection of a specific, flawed system.</p>
+
+            <h2 class="section-header">Better Coalitions with Proportional Approval Voting</h2>
+            <p>Under First Past the Post, coalition governments are rare and often unstable. When they do form, they are typically between two parties with very different platforms, leading to policy gridlock and voter dissatisfaction. Proportional Approval Voting, on the other hand, encourages the formation of stable, effective coalitions. Because parties are incentivized to seek broad approval from the electorate, they are more likely to find common ground and work together. This leads to more representative and effective governance, as coalitions are built on shared policy goals rather than political expediency.</p>
+
+            <h2 class="section-header">Better Coalitions with Proportional Approval Voting</h2>
+            <p>Under First Past the Post, coalition governments are rare and often unstable. When they do form, they are typically between two parties with very different platforms, leading to policy gridlock and voter dissatisfaction. Proportional Approval Voting, on the other hand, encourages the formation of stable, effective coalitions. Because parties are incentivized to seek broad approval from the electorate, they are more likely to find common ground and work together. This leads to more representative and effective governance, as coalitions are built on shared policy goals rather than political expediency.</p>
+
+            <h2 class="section-header">Meeting the 'Good Systems Agreement' Principles</h2>
+            <p>Proportional Approval Voting aligns with the key principles of the "Good Systems Agreement" from Make Votes Matter:</p>
+            <ul>
+                <li><strong>Proportionality:</strong> Seats would closely match the votes cast for each party.</li>
+                <li><strong>Representation:</strong> MPs and governments would better represent the views of the voters.</li>
+                <li><strong>Equal votes:</strong> The value of individual votes would not be distorted by geography, and tactical voting would be minimised.</li>
+                <li><strong>Local links:</strong> The system can be designed to maintain links between MPs and specific geographic areas.</li>
+                <li><strong>Diversity:</strong> It would encourage the election of parliaments that reflect the population.</li>
+                <li><strong>Voter choice:</strong> Voters would have a wide choice of parties and could express preferences for people rather than just parties.</li>
+                <li><strong>Accountability:</strong> MPs and governments would be more accountable to the voters.</li>
+                <li><strong>Balance of stability and flexibility:</strong> It would engender stable, flexible government with the ability to compromise.</li>
+                <li><strong>Sustainability and adaptability:</strong> The system would be able to respond and adapt to changing needs.</li>
+                <li><strong>Voting simplicity:</strong> The ballot papers would be easy for voters to understand and use.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Simple, bulletproof JavaScript without complex operations
+        function createBallots() {
+            const pluralityContainer = document.getElementById('plurality-ballots');
+            const approvalContainer = document.getElementById('approval-ballots');
+
+            if (!pluralityContainer || !approvalContainer) return;
+
+            const candidates = ['Reform UK', 'Conservative', 'Liberal Democrats', 'Labour', 'Green'];
+            const candidateKeys = ['reform-uk', 'conservative', 'liberal-democrats', 'labour', 'green'];
+
+            // Create plurality ballots
+            pluralityContainer.innerHTML = '';
+            for (let voter = 1; voter <= 6; voter++) {
+                let ballotHTML = '<div class="ballot"><h4>Voter ' + voter + '</h4>';
+                for (let i = 0; i < candidates.length; i++) {
+                    ballotHTML += '<div class="candidate-option">';
+                    ballotHTML += '<input type="radio" name="plurality-' + voter + '" value="' + candidateKeys[i] + '" onchange="updateResults()" id="p-' + voter + '-' + candidateKeys[i] + '">';
+                    ballotHTML += '<label for="p-' + voter + '-' + candidateKeys[i] + '">' + candidates[i] + '</label>';
+                    ballotHTML += '</div>';
+                }
+                ballotHTML += '</div>';
+                pluralityContainer.innerHTML += ballotHTML;
+            }
+
+            // Create approval ballots
+            approvalContainer.innerHTML = '';
+            for (let voter = 1; voter <= 6; voter++) {
+                let ballotHTML = '<div class="ballot"><h4>Voter ' + voter + '</h4>';
+                for (let i = 0; i < candidates.length; i++) {
+                    ballotHTML += '<div class="candidate-option">';
+                    ballotHTML += '<input type="checkbox" name="approval-' + voter + '-' + candidateKeys[i] + '" onchange="updateResults()" id="a-' + voter + '-' + candidateKeys[i] + '">';
+                    ballotHTML += '<label for="a-' + voter + '-' + candidateKeys[i] + '">' + candidates[i] + '</label>';
+                    ballotHTML += '</div>';
+                }
+                ballotHTML += '</div>';
+                approvalContainer.innerHTML += ballotHTML;
+            }
+        }
+
+        function setDemoScenario() {
+            resetAllBallots();
+
+            // Scenario: 6 voters in a constituency.
+            // Voter preferences that might lead to a proportional outcome.
+
+            // Plurality Votes (tactical voting is common)
+            document.getElementById('p-1-green').checked = true; // Votes Labour to stop Conservatives
+            document.getElementById('p-2-labour').checked = true; // Votes Labour to stop Conservatives
+            document.getElementById('p-3-conservative').checked = true;
+            document.getElementById('p-4-conservative').checked = true;
+            document.getElementById('p-5-liberal-democrats').checked = true; // Votes for their first choice
+            document.getElementById('p-6-labour').checked = true; // Votes for their first choice
+
+            // Approval Votes (express true preferences)
+            // 2 Labour-Green voters
+            document.getElementById('a-1-labour').checked = true;
+            document.getElementById('a-1-green').checked = true;
+            document.getElementById('a-2-liberal-democrats').checked = true;
+            document.getElementById('a-2-labour').checked = true;
+            // 2 Conservative-Reform voters
+            document.getElementById('a-3-conservative').checked = true;
+            document.getElementById('a-3-reform-uk').checked = true;
+            document.getElementById('a-4-conservative').checked = true;
+            document.getElementById('a-4-liberal-democrats').checked = true;
+            // 1 Lib Dem-Green-Labour voter
+            document.getElementById('a-5-liberal-democrats').checked = true;
+            document.getElementById('a-5-green').checked = true;
+            document.getElementById('a-5-labour').checked = true;
+            // 1 Reform-Conservative-Lib Dem voter
+            document.getElementById('a-6-reform-uk').checked = true;
+            document.getElementById('a-6-green').checked = true;
+            document.getElementById('a-6-labour').checked = true;
+
+
+
+            updateResults();
+        }
+
+        function updateResults() {
+            updatePluralityResults();
+            updateApprovalResults();
+        }
+
+        function updatePluralityResults() {
+            const votes = { 'reform-uk': 0, conservative: 0, 'liberal-democrats': 0, labour: 0, green: 0 };
+
+            for (let i = 1; i <= 6; i++) {
+                const checked = document.querySelector('input[name="plurality-' + i + '"]:checked');
+                if (checked) {
+                    votes[checked.value]++;
+                }
+            }
+
+            displayResults('plurality-results', votes, 'plurality-winner');
+        }
+
+        function updateApprovalResults() {
+            const votes = { 'reform-uk': 0, conservative: 0, 'liberal-democrats': 0, labour: 0, green: 0 };
+            const candidates = ['reform-uk', 'conservative', 'liberal-democrats', 'labour', 'green'];
+
+            for (let i = 1; i <= 6; i++) {
+                for (let j = 0; j < candidates.length; j++) {
+                    const checkbox = document.getElementById('a-' + i + '-' + candidates[j]);
+                    if (checkbox && checkbox.checked) {
+                        votes[candidates[j]]++;
+                    }
+                }
+            }
+
+            displayResults('approval-results', votes, 'approval-winner');
+            drawParliamentChart(votes);
+        }
+
+        function displayResults(containerId, votes, winnerId) {
+            const container = document.getElementById(containerId);
+            const winnerDiv = document.getElementById(winnerId);
+            if (!container || !winnerDiv) return;
+
+            const candidates = [
+                { key: 'reform-uk', name: 'Reform UK', class: 'reform-uk' },
+                { key: 'conservative', name: 'Conservative', class: 'conservative' },
+                { key: 'liberal-democrats', name: 'Liberal Democrats', class: 'liberal-democrats' },
+                { key: 'labour', name: 'Labour', class: 'labour' },
+                { key: 'green', name: 'Green', class: 'green' }
+            ];
+
+            let html = '';
+            let maxVotes = 0;
+            let winners = [];
+            candidates.forEach(c => {
+                if (votes[c.key] > maxVotes) maxVotes = votes[c.key];
+            });
+            candidates.forEach(c => {
+                if (votes[c.key] === maxVotes && maxVotes > 0) winners.push(c.name);
+            });
+
+            candidates.forEach(candidate => {
+                const voteCount = votes[candidate.key];
+                const barWidth = voteCount > 0 ? (voteCount / 6) * 100 : 0;
+                html += `<div class="result-bar"><div class="bar ${candidate.class}" style="width: ${barWidth}%;"></div><div class="bar-text">${candidate.name}: ${voteCount}</div></div>`;
+            });
+
+            if (maxVotes > 0) {
+                winnerDiv.innerHTML = '🏆 ' + (winners.length > 1 ? 'Tie: ' + winners.join(' & ') : winners[0] + ' Wins!');
+            } else {
+                winnerDiv.innerHTML = 'Click ballots to vote';
+            }
+            container.innerHTML = html;
+        }
+
+        function drawParliamentChart(votes) {
+            const chartContainer = document.getElementById('proportional-chart');
+            const winnerDiv = document.getElementById('proportional-winner');
+            if (!chartContainer || !winnerDiv) return;
+
+            chartContainer.innerHTML = ''; // Clear previous chart
+            winnerDiv.innerHTML = '';
+
+            const candidates = [
+                { key: 'reform-uk', name: 'Reform UK', color: '#12B6CF' },
+                { key: 'conservative', name: 'Conservative', color: '#0087DC' },
+                { key: 'liberal-democrats', name: 'Liberal Democrats', color: '#FAA61A' },
+                { key: 'labour', name: 'Labour', color: '#E4003B' },
+                { key: 'green', name: 'Green', color: '#6AB023' }
+            ];
+
+            const totalSeats = 650;
+            let totalApprovalVotes = 0;
+            candidates.forEach(c => totalApprovalVotes += votes[c.key]);
+
+            if (totalApprovalVotes === 0) {
+                winnerDiv.innerHTML = 'Click ballots to vote';
+                return;
+            }
+
+            const seats = {};
+            const remainders = {};
+            let seatsAllocated = 0;
+
+            candidates.forEach(c => {
+                const voteCount = votes[c.key];
+                const proportion = voteCount / totalApprovalVotes;
+                const exactSeats = proportion * totalSeats;
+                seats[c.key] = Math.floor(exactSeats);
+                remainders[c.key] = exactSeats - Math.floor(exactSeats);
+                seatsAllocated += seats[c.key];
+            });
+
+            const remainingSeats = totalSeats - seatsAllocated;
+            const sortedRemainders = Object.keys(remainders).sort((a, b) => remainders[b] - remainders[a]);
+
+            for (let i = 0; i < remainingSeats; i++) {
+                seats[sortedRemainders[i]]++;
+            }
+
+            const chartData = [];
+            const seatDistribution = [];
+            candidates.forEach(c => {
+                const seatCount = seats[c.key] || 0;
+                if (seatCount > 0) {
+                    seatDistribution.push(`${c.name}: ${seatCount}`);
+                    chartData.push({
+                        seats: seatCount,
+                        color: c.color
+                    });
+                }
+            });
+
+            const parliament = d3.parliamentChart()
+                .width(600)
+                .sections(1)
+                .sectionGap(0)
+                .seatRadius(5)
+                .rowHeight(10)
+                .aggregatedData(chartData);
+
+            d3.select(chartContainer).append('svg').attr('width', 600).attr('height', 300).append('g').call(parliament);
+
+            winnerDiv.innerHTML = '🏆 Seat Allocation: ' + seatDistribution.join(', ');
+        }
+
+        function resetAllBallots() {
+            const inputs = document.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].checked = false;
+            }
+            updateResults();
+        }
+
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            createBallots();
+            setDemoScenario();
+        });
+    </script>
+
+
+</body></html>

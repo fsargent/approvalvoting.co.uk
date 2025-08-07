@@ -4,9 +4,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dear Labour: It's Time for Real Electoral Reform</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✅</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script src="https://unpkg.com/d3-parliament-chart@0.0.6/build/d3-parliament-chart.min.js"></script>
 </head>
 <body>
     <header class="govuk-header" role="banner">
@@ -52,7 +54,7 @@
                             <label class="ballot-label">Labour</label>
                         </div>
                         <div class="ballot-option">
-                            <div class="bvallot-radio"></div>
+                            <div class="ballot-radio"></div>
                             <label class="ballot-label">Green</label>
                         </div>
                     </div>
@@ -97,54 +99,277 @@
                 </div>
             </div>
 
-            <h2 class="section-header">See The Difference In Action</h2>
-            <p>Same 6 voters, same candidates, dramatically different results.</p>
-
-            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 300px;">
-                    <div class="section-title plurality-title" style="margin-bottom: 20px;">Current System (Choose ONE)</div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px;" id="plurality-ballots"></div>
-                </div>
-
-                <div style="flex: 1; min-width: 300px;">
-                    <div class="section-title approval-title" style="margin-bottom: 20px;">Approval Voting (Single Winner)</div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px;" id="approval-ballots"></div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
-                <div style="flex: 1; min-width: 300px;">
-                    <div class="results-box plurality-results">
-                        <div class="results-title">Choose One Results</div>
-                        <div id="plurality-results"></div>
-                        <div id="plurality-winner" class="winner-announcement plurality-winner"></div>
-                    </div>
-                </div>
-                 <div style="flex: 1; min-width: 300px;">
-                    <div class="results-box approval-results">
-                        <div class="results-title">Approval Results</div>
-                        <div id="approval-results"></div>
-                        <div id="approval-winner" class="winner-announcement approval-winner"></div>
-                    </div>
-                </div>
-            </div>
-            <div style="margin-top: 30px;">
-                <div class="section-title approval-title" style="margin-bottom: 20px;">Proportional Approval Voting (Parliament)</div>
-                 <div class="results-box proportional-results">
-                    <div id="proportional-chart"></div>
-                    <div id="proportional-legend" class="chart-legend"></div>
-                    <div id="proportional-winner" class="winner-announcement approval-winner"></div>
-                </div>
-            </div>
-
             <h2 class="section-header">Single-Winner Elections: A Clear Mandate for Mayors</h2>
             <p>For single-winner elections, like those for directly elected mayors, Approval Voting is the ideal system. It ensures the winner has the broadest possible support from the electorate. Unlike FPTP, where a candidate can win with a small plurality of the vote, Approval Voting elects the candidate who is approved of by the most voters. This leads to winners with a stronger mandate and reduces the "spoiler effect," where voters are afraid to vote for their true favorite for fear of helping their least favorite candidate win.</p>
 
             <h2 class="section-header">Parliamentary Elections: Proportional Approval Voting</h2>
             <p>For parliamentary elections, we can use Proportional Approval Voting to achieve a proportionally representative Parliament. This system combines the simplicity of Approval Voting with the fairness of Proportional Representation. Voters can vote for as many candidates as they approve of, and the results are used to elect a proportional slate of representatives. This system ensures that all votes matter and that Parliament accurately reflects the diversity of political opinion in the country.</p>
 
+            <h2 class="section-header">How Proportional Approval Voting Works</h2>
+            
+            <div class="pav-explanation">
+                <h3>🗳️ The Ballot</h3>
+                <p>Under Proportional Approval Voting with party lists, your ballot would have two parts:</p>
+                
+                <div class="ballot-example">
+                    <div class="ballot-part">
+                        <h4>Part 1: Choose Your Party</h4>
+                        <p>Select ONE party that best represents your views:</p>
+                        <ul class="party-list">
+                            <li>☐ Labour Party</li>
+                            <li>☐ Conservative Party</li>
+                            <li>☐ Liberal Democrat Party</li>
+                            <li>☐ Green Party</li>
+                            <li>☐ Reform UK</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="ballot-part">
+                        <h4>Part 2: Approve Candidates (Optional)</h4>
+                        <p>From your chosen party's list, approve as many candidates as you like:</p>
+                        <div class="candidate-approval">
+                            <p><strong>Liberal Democrat Candidates:</strong></p>
+                            <ul class="candidate-list">
+                                <li>☐ Emma Roberts</li>
+                                <li>☐ Michael Thompson</li>
+                                <li>☐ Lisa Patel</li>
+                                <li>☐ John Clarke</li>
+                                <li>☐ Rachel Ahmed</li>
+                                <li>... and more candidates</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>📊 How Seats Are Allocated</h3>
+                <p>The system uses a "Fair Share" approach to ensure proportional representation:</p>
+                
+                <div class="allocation-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Calculate "Cost Per Seat"</h4>
+                            <p>Divide total votes by total seats (650) to find how many votes "buy" one seat</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Initial Allocation</h4>
+                            <p>Each party gets seats based on how many times they can "afford" the seat cost</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Transfer Unspent Votes</h4>
+                            <p>Votes from parties below the threshold or with leftover votes transfer to larger parties based on voter preferences</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Fill Remaining Seats</h4>
+                            <p>Continue transfers until all 650 seats are allocated proportionally</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>🏆 A Real Example</h3>
+                <p>Based on current polling (approximate):</p>
+                
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Party</th>
+                            <th>Vote Share</th>
+                            <th>FPTP Seats (projected)</th>
+                            <th>Proportional Seats</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Reform UK</td>
+                            <td>26%</td>
+                            <td>450+</td>
+                            <td>169</td>
+                        </tr>
+                        <tr>
+                            <td>Labour</td>
+                            <td>25%</td>
+                            <td>100-150</td>
+                            <td>162</td>
+                        </tr>
+                        <tr>
+                            <td>Conservative</td>
+                            <td>21%</td>
+                            <td>50-100</td>
+                            <td>136</td>
+                        </tr>
+                        <tr>
+                            <td>Liberal Democrats</td>
+                            <td>15%</td>
+                            <td>20-40</td>
+                            <td>97</td>
+                        </tr>
+                        <tr>
+                            <td>Green</td>
+                            <td>9%</td>
+                            <td>1-3</td>
+                            <td>58</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="pav-benefits">
+                    <h3>✅ Why This Matters</h3>
+                    <ul>
+                        <li><strong>True Representation:</strong> Seat share matches vote share - no more artificial majorities</li>
+                        <li><strong>Every Vote Counts:</strong> No "safe seats" or "wasted votes" - your voice matters everywhere</li>
+                        <li><strong>Coalition Building:</strong> Encourages parties to work together and find common ground</li>
+                        <li><strong>Higher Turnout:</strong> When every vote matters, more people participate</li>
+                        <li><strong>Local + National:</strong> Keep constituency MPs while ensuring proportional results</li>
+                    </ul>
+                </div>
+            </div>
+
             <h2 class="section-header">Why the Alternative Vote Failed and What We Can Learn</h2>
             <p>In 2011, the UK rejected the Alternative Vote (AV). A key reason for its failure was its complexity. Voters struggled to understand the mechanics of ranking candidates and the subsequent rounds of runoffs. This complexity made it easy for opponents to brand it as a "politician's choice" and sow confusion and doubt.</p><p>In contrast, Approval Voting is simple and intuitive. You vote for as many candidates as you approve of, and the candidate with the most votes wins. This straightforwardness makes it more transparent and easier for voters to understand, ensuring that the winner has the broadest support. The failure of AV was not a rejection of all electoral reform, but a clear lesson that simplicity and clarity are essential for any successful change.</p>
+
+            <h2 class="section-header">Why Not Ranked Choice Voting (RCV) or Single Transferable Vote (STV)?</h2>
+            
+            <div class="comparison-section">
+                <p>While RCV and STV are improvements over First Past the Post, they have significant drawbacks compared to Approval Voting:</p>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-item">
+                        <h3>🤔 Complexity</h3>
+                        <div class="comparison-content">
+                            <div class="rcv-side">
+                                <h4>RCV/STV</h4>
+                                <ul>
+                                    <li>Requires ranking all candidates in order</li>
+                                    <li>Complex counting with multiple rounds</li>
+                                    <li>Results can take days to determine</li>
+                                    <li>Difficult to explain to voters</li>
+                                </ul>
+                            </div>
+                            <div class="approval-side">
+                                <h4>Approval Voting</h4>
+                                <ul>
+                                    <li>Simply approve or don't approve</li>
+                                    <li>Count once, winner immediately clear</li>
+                                    <li>Results available election night</li>
+                                    <li>Anyone can understand in seconds</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-item">
+                        <h3>🗳️ Ballot Errors</h3>
+                        <div class="comparison-content">
+                            <div class="rcv-side">
+                                <h4>RCV/STV</h4>
+                                <ul>
+                                    <li>High spoilage rate (3-5% typical)</li>
+                                    <li>Voters make ranking mistakes</li>
+                                    <li>Exhausted ballots don't count</li>
+                                    <li>Strategic ranking is complex</li>
+                                </ul>
+                            </div>
+                            <div class="approval-side">
+                                <h4>Approval Voting</h4>
+                                <ul>
+                                    <li>Near-zero spoilage rate</li>
+                                    <li>No way to invalidate ballot</li>
+                                    <li>Every vote always counts</li>
+                                    <li>Strategy is straightforward</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-item">
+                        <h3>📊 Representation</h3>
+                        <div class="comparison-content">
+                            <div class="rcv-side">
+                                <h4>RCV/STV</h4>
+                                <ul>
+                                    <li>Can elect polarizing candidates</li>
+                                    <li>Center squeeze effect</li>
+                                    <li>Later-no-harm encourages bullet voting</li>
+                                    <li>Doesn't measure broad support</li>
+                                </ul>
+                            </div>
+                            <div class="approval-side">
+                                <h4>Approval Voting</h4>
+                                <ul>
+                                    <li>Elects consensus candidates</li>
+                                    <li>No center squeeze</li>
+                                    <li>Encourages honest voting</li>
+                                    <li>Measures true support levels</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-item">
+                        <h3>💰 Implementation</h3>
+                        <div class="comparison-content">
+                            <div class="rcv-side">
+                                <h4>RCV/STV</h4>
+                                <ul>
+                                    <li>Expensive new voting machines</li>
+                                    <li>Complex software required</li>
+                                    <li>Extensive voter education needed</li>
+                                    <li>Difficult to audit</li>
+                                </ul>
+                            </div>
+                            <div class="approval-side">
+                                <h4>Approval Voting</h4>
+                                <ul>
+                                    <li>Works with existing equipment</li>
+                                    <li>Simple software update</li>
+                                    <li>Minimal education required</li>
+                                    <li>Easy to audit and verify</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="real-world-examples">
+                    <h3>🌍 Real-World Evidence</h3>
+                    <div class="example-grid">
+                        <div class="example">
+                            <h4>Burlington, Vermont (2009)</h4>
+                            <p>RCV elected the candidate who would have lost head-to-head against either opponent. The system was repealed after this failure.</p>
+                        </div>
+                        <div class="example">
+                            <h4>Australia's Senate</h4>
+                            <p>STV ballots are so complex that 95%+ of voters just vote "above the line," letting parties control their preferences.</p>
+                        </div>
+                        <div class="example">
+                            <h4>Fargo, North Dakota (2020)</h4>
+                            <p>First US city to adopt Approval Voting. Voter satisfaction increased, and results clearly reflected community consensus.</p>
+                        </div>
+                        <div class="example">
+                            <h4>St. Louis, Missouri (2021)</h4>
+                            <p>Adopted Approval Voting with 70% support. First election saw higher turnout and broad coalition building.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="key-takeaway">
+                    <h3>🎯 The Bottom Line</h3>
+                    <p>While RCV and STV are improvements over FPTP, they introduce unnecessary complexity without delivering better outcomes. Approval Voting achieves all the benefits of electoral reform while remaining simple enough for anyone to understand and use effectively.</p>
+                    <p><strong>Remember:</strong> The best voting system is one that voters trust and understand. Approval Voting's simplicity is its greatest strength.</p>
+                </div>
+            </div>
 
             <h2 class="section-header">Better Coalitions with Proportional Approval Voting</h2>
             <p>Under First Past the Post, coalition governments are rare and often unstable. When they do form, they are typically between two parties with very different platforms, leading to policy gridlock and voter dissatisfaction. Proportional Approval Voting, on the other hand, encourages the formation of stable, effective coalitions. Because parties are incentivized to seek broad approval from the electorate, they are more likely to find common ground and work together. This leads to more representative and effective governance, as coalitions are built on shared policy goals rather than political expediency.</p>
@@ -163,6 +388,42 @@
                 <li><strong>Sustainability and adaptability:</strong> The system would be able to respond and adapt to changing needs.</li>
                 <li><strong>Voting simplicity:</strong> The ballot papers would be easy for voters to understand and use.</li>
             </ul>
+
+            <h2 class="section-header">See The Difference In Action</h2>
+            <p>Same 6 voters, same candidates, dramatically different results.</p>
+
+            <div class="demo-section">
+                <div class="demo-column">
+                    <div class="section-title plurality-title">Current System (Choose ONE)</div>
+                    <div id="plurality-ballots"></div>
+                </div>
+
+                <div class="demo-column">
+                    <div class="section-title approval-title">Approval Voting (Single Winner)</div>
+                    <div id="approval-ballots"></div>
+                </div>
+            </div>
+
+            <div class="results-layout">
+                <div class="results-box plurality-results">
+                    <div class="results-title">Choose One Results</div>
+                    <div id="plurality-results"></div>
+                    <div id="plurality-winner" class="winner-announcement plurality-winner"></div>
+                </div>
+                <div class="results-box approval-results">
+                    <div class="results-title">Approval Results</div>
+                    <div id="approval-results"></div>
+                    <div id="approval-winner" class="winner-announcement approval-winner"></div>
+                </div>
+            </div>
+            <div style="margin-top: 2rem;">
+                <div class="section-title approval-title">Proportional Approval Voting (Parliament)</div>
+                 <div class="results-box proportional-results">
+                    <div id="proportional-chart"></div>
+                    <div id="proportional-legend" class="chart-legend"></div>
+                    <div id="proportional-winner" class="winner-announcement approval-winner"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -333,7 +594,7 @@
                 { key: 'green', name: 'Green', color: '#6AB023' }
             ];
 
-            const totalSeats = 650;
+            const totalSeats = 650; // Full UK Parliament
             let totalApprovalVotes = 0;
             candidates.forEach(c => totalApprovalVotes += votes[c.key]);
 
@@ -370,22 +631,253 @@
                     seatDistribution.push(`${c.name}: ${seatCount}`);
                     chartData.push({
                         seats: seatCount,
-                        color: c.color
+                        color: c.color,
+                        name: c.name
                     });
                 }
             });
 
-            const parliament = d3.parliamentChart()
-                .width(600)
-                .sections(1)
-                .sectionGap(0)
-                .seatRadius(5)
-                .rowHeight(10)
-                .aggregatedData(chartData);
-
-            d3.select(chartContainer).append('svg').attr('width', 600).attr('height', 300).append('g').call(parliament);
+            // Create mobile-friendly parliamentary chart
+            createMobileParliamentChart(chartContainer, chartData);
 
             winnerDiv.innerHTML = '🏆 Seat Allocation: ' + seatDistribution.join(', ');
+        }
+
+        function createMobileParliamentChart(container, data) {
+            if (!data || data.length === 0) return;
+
+            const totalSeats = data.reduce((sum, item) => sum + item.seats, 0);
+            if (totalSeats === 0) return;
+
+            // Create the chart container
+            const chartWrapper = document.createElement('div');
+            chartWrapper.className = 'mobile-parliament-chart';
+            
+            // Append wrapper to container first to get proper width
+            container.appendChild(chartWrapper);
+            
+            // Create canvas element
+            const canvas = document.createElement('canvas');
+            canvas.className = 'parliament-canvas';
+            
+            // Set canvas size based on container
+            const containerWidth = chartWrapper.offsetWidth || container.offsetWidth || 600;
+            
+            // Ensure canvas fits within container with some padding
+            const padding = 32; // Total horizontal padding
+            const maxWidth = Math.min(containerWidth - padding, 600);
+            const canvasWidth = Math.max(320, maxWidth); // Min 320px for very narrow screens
+            
+            // Adjust aspect ratio for different screen sizes
+            let aspectRatio = 0.5; // Default
+            if (canvasWidth < 400) {
+                aspectRatio = 0.7; // Much taller on phones
+            } else if (canvasWidth < 500) {
+                aspectRatio = 0.6; // Taller on small tablets
+            }
+            const canvasHeight = canvasWidth * aspectRatio;
+            
+            // Set actual canvas dimensions (for retina displays)
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = canvasWidth * dpr;
+            canvas.height = canvasHeight * dpr;
+            canvas.style.width = canvasWidth + 'px';
+            canvas.style.height = canvasHeight + 'px';
+            
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+            
+            // Parliament chart parameters (following d3-parliament-chart approach)
+            // For 650 seats, we need smaller seats and tighter rows
+            // Scale based on screen size
+            let seatRadius, rowHeight;
+            
+            if (canvasWidth < 350) { // iPhone SE and similar
+                seatRadius = 2.5;
+                rowHeight = 6;
+            } else if (canvasWidth < 400) { // Standard phones
+                seatRadius = 3;
+                rowHeight = 7;
+            } else if (canvasWidth < 500) { // Large phones/small tablets
+                seatRadius = 4;
+                rowHeight = 8;
+            } else { // Tablets and desktop
+                seatRadius = 5;
+                rowHeight = 10;
+            }
+            
+            const options = {
+                sections: 1,
+                sectionGap: 0,
+                seatRadius: seatRadius,
+                rowHeight: rowHeight
+            };
+            
+            // Calculate seat positions using the d3-parliament-chart algorithm
+            const totalSeatsInChart = data.reduce((sum, item) => sum + item.seats, 0);
+            const seatPositions = calculateParliamentPoints(totalSeatsInChart, options, canvasWidth);
+            
+            // Sort seat positions by angle (left to right)
+            // First add angle back to positions for sorting
+            const seatPositionsWithAngle = seatPositions.map((pos, index) => {
+                // Calculate angle from position
+                const dx = pos.x - (canvasWidth / 2);
+                const dy = (canvasHeight) - pos.y;
+                const angle = Math.atan2(dy, dx);
+                return { ...pos, angle: angle };
+            });
+            
+            // Sort by angle (left to right in semi-circle)
+            seatPositionsWithAngle.sort((a, b) => b.angle - a.angle);
+            
+            // Create a mapping of seats to parties
+            const seatData = [];
+            let seatIndex = 0;
+            
+            // Assign parties to seats in order (left to right)
+            data.forEach(party => {
+                for (let i = 0; i < party.seats; i++) {
+                    if (seatIndex < seatPositionsWithAngle.length) {
+                        seatData.push({
+                            x: seatPositionsWithAngle[seatIndex].x,
+                            y: seatPositionsWithAngle[seatIndex].y,
+                            color: party.color,
+                            name: party.name,
+                            partySeats: party.seats
+                        });
+                        seatIndex++;
+                    }
+                }
+            });
+            
+            // Draw seats on canvas
+            // Disable shadows for better performance with 650 seats
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            
+            seatData.forEach(seat => {
+                ctx.beginPath();
+                ctx.arc(seat.x, seat.y, options.seatRadius, 0, 2 * Math.PI);
+                ctx.fillStyle = seat.color;
+                ctx.fill();
+                // Lighter stroke for 650 seats
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+            });
+            
+            // Append canvas to wrapper
+            chartWrapper.appendChild(canvas);
+            
+            // Add hover functionality
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX - rect.left) * dpr;
+                const y = (e.clientY - rect.top) * dpr;
+                
+                // Find if mouse is over a seat
+                let hoveredSeat = null;
+                seatData.forEach(seat => {
+                    const distance = Math.sqrt(
+                        Math.pow(x - seat.x * dpr, 2) + 
+                        Math.pow(y - seat.y * dpr, 2)
+                    );
+                    if (distance <= options.seatRadius * dpr) {
+                        hoveredSeat = seat;
+                    }
+                });
+                
+                canvas.style.cursor = hoveredSeat ? 'pointer' : 'default';
+                if (hoveredSeat) {
+                    canvas.title = `${hoveredSeat.name}: ${hoveredSeat.partySeats} seats`;
+                } else {
+                    canvas.title = '';
+                }
+            });
+            
+            // Create legend
+            const legend = document.createElement('div');
+            legend.className = 'parliament-legend';
+            
+            data.forEach(party => {
+                const legendItem = document.createElement('div');
+                legendItem.className = 'legend-item';
+                
+                const colorBox = document.createElement('div');
+                colorBox.className = 'legend-color';
+                colorBox.style.backgroundColor = party.color;
+                
+                const label = document.createElement('span');
+                label.className = 'legend-label';
+                label.textContent = `${party.name}: ${party.seats}`;
+                
+                legendItem.appendChild(colorBox);
+                legendItem.appendChild(label);
+                legend.appendChild(legendItem);
+            });
+            
+            chartWrapper.appendChild(legend);
+        }
+        
+        // Implementation of the d3-parliament-chart algorithm
+        function calculateParliamentPoints(totalPoints, options, graphicWidth) {
+            const graphicHeight = graphicWidth / 2;
+            const { seatRadius, rowHeight, sectionGap } = options;
+            
+            // Use less than full semi-circle for better centering (like real parliaments)
+            const startRad = Math.PI * 0.15; // Start at 15% of semi-circle
+            const endRad = Math.PI * 0.85;   // End at 85% of semi-circle
+            
+            // Add padding to ensure seats aren't cut off
+            const padding = seatRadius * 2;
+            const graphRadius = graphicHeight - padding;
+            const points = [];
+            let currentRow = 0;
+            
+            while (points.length < totalPoints) {
+                const currentRowRadius = graphRadius - (rowHeight * currentRow);
+                
+                // Calculate gap adjustment for this row
+                const currentRowGapRad = Math.atan((seatRadius + (sectionGap / 2)) / currentRowRadius);
+                const currentRowStartRad = startRad + currentRowGapRad;
+                const currentRowEndRad = endRad - currentRowGapRad;
+                
+                if (currentRowEndRad <= currentRowStartRad || currentRowRadius <= 0) break;
+                
+                // Calculate minimum angular step based on seat size
+                // Use tighter spacing for 650 seats
+                const spacingFactor = totalPoints > 400 ? 2.0 : 2.5;
+                const currRadStep = Math.atan((spacingFactor * seatRadius) / currentRowRadius);
+                
+                // Calculate how many seats fit in this row
+                const rowSeats = Math.min(
+                    Math.floor((currentRowEndRad - currentRowStartRad) / currRadStep),
+                    totalPoints - points.length
+                );
+                
+                // Calculate actual angular step for even distribution
+                const roundedRadStep = rowSeats > 0
+                    ? (currentRowEndRad - currentRowStartRad) / rowSeats
+                    : 0;
+                
+                // Add seats for this row
+                for (let currSeat = 0; currSeat < rowSeats; currSeat++) {
+                    const currentAngle = rowSeats > 0
+                        ? (currSeat * roundedRadStep + currentRowStartRad + roundedRadStep / 2)
+                        : ((currentRowStartRad + currentRowEndRad) / 2);
+                    
+                    points.push({
+                        x: Math.cos(currentAngle) * currentRowRadius + graphicHeight,
+                        y: graphicHeight - Math.sin(currentAngle) * currentRowRadius - seatRadius
+                    });
+                }
+                
+                currentRow++;
+            }
+            
+            return points;
         }
 
         function resetAllBallots() {

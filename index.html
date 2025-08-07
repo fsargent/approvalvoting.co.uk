@@ -102,42 +102,27 @@
             <h2 class="section-header">Single-Winner Elections: A Clear Mandate for Mayors</h2>
             <p>For single-winner elections, like those for directly elected mayors, Approval Voting is the ideal system. It ensures the winner has the broadest possible support from the electorate. Unlike FPTP, where a candidate can win with a small plurality of the vote, Approval Voting elects the candidate who is approved of by the most voters. This leads to winners with a stronger mandate and reduces the "spoiler effect," where voters are afraid to vote for their true favorite for fear of helping their least favorite candidate win.</p>
 
-            <h2 class="section-header">Parliamentary Elections: Proportional Approval Voting</h2>
+            <h2 class="section-header">Parliamentary Elections: Fair Share Voting</h2>
             <p>For parliamentary elections, we can use Proportional Approval Voting to achieve a proportionally representative Parliament. This system combines the simplicity of Approval Voting with the fairness of Proportional Representation. Voters can vote for as many candidates as they approve of, and the results are used to elect a proportional slate of representatives. This system ensures that all votes matter and that Parliament accurately reflects the diversity of political opinion in the country.</p>
 
-            <h2 class="section-header">How Proportional Approval Voting Works</h2>
+            <h2 class="section-header">How Fair Share Voting Works</h2>
             
             <div class="pav-explanation">
                 <h3>🗳️ The Ballot</h3>
-                <p>Under Proportional Approval Voting with party lists, your ballot would have two parts:</p>
+                <p>Under Fair Share Voting, you can approve as many parties as you like:</p>
                 
                 <div class="ballot-example">
                     <div class="ballot-part">
-                        <h4>Part 1: Choose Your Party</h4>
-                        <p>Select ONE party that best represents your views:</p>
+                        <h4>The Ballot</h4>
+                        <p>Approve ANY parties you'd be happy to see in Parliament:</p>
                         <ul class="party-list">
-                            <li>☐ Labour Party</li>
-                            <li>☐ Conservative Party</li>
-                            <li>☐ Liberal Democrat Party</li>
-                            <li>☐ Green Party</li>
-                            <li>☐ Reform UK</li>
+                            <li><input type="checkbox" id="party-labour" class="party-checkbox"> <label for="party-labour">Labour Party</label></li>
+                            <li><input type="checkbox" id="party-conservative" class="party-checkbox"> <label for="party-conservative">Conservative Party</label></li>
+                            <li><input type="checkbox" id="party-libdem" class="party-checkbox"> <label for="party-libdem">Liberal Democrat Party</label></li>
+                            <li><input type="checkbox" id="party-green" class="party-checkbox"> <label for="party-green">Green Party</label></li>
+                            <li><input type="checkbox" id="party-reform" class="party-checkbox"> <label for="party-reform">Reform UK</label></li>
                         </ul>
-                    </div>
-                    
-                    <div class="ballot-part">
-                        <h4>Part 2: Approve Candidates (Optional)</h4>
-                        <p>From your chosen party's list, approve as many candidates as you like:</p>
-                        <div class="candidate-approval">
-                            <p><strong>Liberal Democrat Candidates:</strong></p>
-                            <ul class="candidate-list">
-                                <li>☐ Emma Roberts</li>
-                                <li>☐ Michael Thompson</li>
-                                <li>☐ Lisa Patel</li>
-                                <li>☐ John Clarke</li>
-                                <li>☐ Rachel Ahmed</li>
-                                <li>... and more candidates</li>
-                            </ul>
-                        </div>
+                        <p class="hint">✓ You can approve multiple parties!</p>
                     </div>
                 </div>
                 
@@ -148,34 +133,46 @@
                     <div class="step">
                         <div class="step-number">1</div>
                         <div class="step-content">
-                            <h4>Calculate "Cost Per Seat"</h4>
-                            <p>Divide total votes by total seats (650) to find how many votes "buy" one seat</p>
+                            <h4>Count Party Approvals</h4>
+                            <p>Count how many voters approved each party nationwide</p>
                         </div>
                     </div>
                     
                     <div class="step">
                         <div class="step-number">2</div>
                         <div class="step-content">
-                            <h4>Initial Allocation</h4>
-                            <p>Each party gets seats based on how many times they can "afford" the seat cost</p>
+                            <h4>Apply Threshold</h4>
+                            <p>Parties must receive at least 3% of total approvals to qualify for seats</p>
                         </div>
                     </div>
                     
                     <div class="step">
                         <div class="step-number">3</div>
                         <div class="step-content">
-                            <h4>Transfer Unspent Votes</h4>
-                            <p>Votes from parties below the threshold or with leftover votes transfer to larger parties based on voter preferences</p>
+                            <h4>Allocate Seats Using SPAV</h4>
+                            <p>Sequential Proportional Approval Voting ensures proportional representation across all 650 seats</p>
                         </div>
                     </div>
                     
                     <div class="step">
                         <div class="step-number">4</div>
                         <div class="step-content">
-                            <h4>Fill Remaining Seats</h4>
-                            <p>Continue transfers until all 650 seats are allocated proportionally</p>
+                            <h4>Parties Select MPs</h4>
+                            <p>Each party chooses which candidates fill their seats, considering popularity, geography, and diversity</p>
                         </div>
                     </div>
+                </div>
+
+                <div class="spav-explanation">
+                    <h4>📐 How SPAV Works for Parties</h4>
+                    <p>Sequential Proportional Approval Voting (SPAV) ensures fair representation:</p>
+                    <ul>
+                        <li>First seat goes to the party with the most approvals</li>
+                        <li>Voters who approved that party have their "voting power" reduced for the next round</li>
+                        <li>This prevents any group from dominating all the seats</li>
+                        <li>The process repeats until all 650 seats are filled</li>
+                        <li>Result: Each party's seat share closely matches their approval share</li>
+                    </ul>
                 </div>
                 
                 <h3>🏆 A Real Example</h3>
@@ -229,9 +226,11 @@
                     <ul>
                         <li><strong>True Representation:</strong> Seat share matches vote share - no more artificial majorities</li>
                         <li><strong>Every Vote Counts:</strong> No "safe seats" or "wasted votes" - your voice matters everywhere</li>
-                        <li><strong>Coalition Building:</strong> Encourages parties to work together and find common ground</li>
-                        <li><strong>Higher Turnout:</strong> When every vote matters, more people participate</li>
-                        <li><strong>Local + National:</strong> Keep constituency MPs while ensuring proportional results</li>
+
+                        <li><strong>Regional Balance:</strong> Parties incentivized to select MPs from all parts of the UK</li>
+                        <li><strong>Diversity:</strong> Encourages selection of candidates representing all demographics</li>
+                        <li><strong>Coalition Building:</strong> Parties must work together and find common ground</li>
+                        <li><strong>Party Accountability:</strong> Selection criteria must be transparent and justified</li>
                     </ul>
                 </div>
             </div>
@@ -251,7 +250,7 @@
                             <div class="rcv-side">
                                 <h4>RCV/STV</h4>
                                 <ul>
-                                    <li>Requires ranking all candidates in order</li>
+                                    <li>Requires ranking many candidates in order</li>
                                     <li>Complex counting with multiple rounds</li>
                                     <li>Results can take days to determine</li>
                                     <li>Difficult to explain to voters</li>
@@ -301,7 +300,6 @@
                                 <ul>
                                     <li>Can elect polarizing candidates</li>
                                     <li>Center squeeze effect</li>
-                                    <li>Later-no-harm encourages bullet voting</li>
                                     <li>Doesn't measure broad support</li>
                                 </ul>
                             </div>
@@ -389,8 +387,122 @@
                 <li><strong>Voting simplicity:</strong> The ballot papers would be easy for voters to understand and use.</li>
             </ul>
 
+            <h2 class="section-header">Draft Legislative Language</h2>
+            <p>To implement Fair Share Voting (based on Approval Voting, <strong>not</strong> the Alternative Vote/RCV) in the UK, we propose the following legislative framework:</p>
+
+            <div class="legislative-section">
+                <h3>Key Definitions</h3>
+                <div class="definition-box">
+                    <h4>Fair Share Voting</h4>
+                    <p>A voting system based on Approval Voting where electors may indicate approval for as many candidates as they wish. This is <strong>fundamentally different</strong> from the Alternative Vote (ranked choice voting) rejected in the 2011 referendum.</p>
+                </div>
+                
+                <h3>For Single-Winner Elections (Mayors, Police Commissioners)</h3>
+                <div class="legal-text">
+                    <h4>Amendment to Section 9HB of the Local Government Act 2000</h4>
+                    <p class="legal-quote">"In elections for directly elected mayors:</p>
+                    <ol class="legal-list">
+                        <li>Each elector shall be entitled to indicate approval for as many candidates as they wish by marking an 'X' next to each approved candidate's name.</li>
+                        <li>The candidate receiving approval from the greatest number of electors shall be declared elected.</li>
+                        <li>In the event of a tie, the returning officer shall decide by lot.</li>
+                        <li>This system, known as Fair Share Voting for single-winner elections, replaces the supplementary vote system."</li>
+                    </ol>
+                </div>
+
+                <h3>For Parliamentary Elections</h3>
+                <div class="legal-text">
+                    <h4>Proposed Fair Share Voting (Parliamentary Elections) Act</h4>
+                    
+                    <h5>Section 1: Voting Method</h5>
+                    <p class="legal-quote">"In elections to the House of Commons:</p>
+                    <ol class="legal-list">
+                        <li>Elections shall be conducted at-large across the United Kingdom as a single constituency.</li>
+                        <li>Each registered political party shall submit an ordered list of candidates prior to the election.</li>
+                        <li>Each elector may indicate approval for one or more political parties registered under the Political Parties, Elections and Referendums Act 2000.</li>
+                        <li>Approval is indicated by marking an 'X' in the appropriate box. There is no ranking of preferences.</li>
+                    </ol>
+                    
+                    <h5>Section 2: Allocation of Seats</h5>
+                    <p class="legal-quote">"Seats shall be allocated as follows:</p>
+                    <ol class="legal-list">
+                        <li>The total number of approvals received by each party shall be calculated.</li>
+                        <li>Seats shall be allocated to parties using Sequential Proportional Approval Voting (SPAV):
+                            <ul>
+                                <li>(a) The party with the most approvals receives the first seat;</li>
+                                <li>(b) For each subsequent seat, the voting weight of ballots that approved already-seated parties is reduced proportionally;</li>
+                                <li>(c) The party with the highest weighted approval score receives the next seat;</li>
+                                <li>(d) This process continues until all 650 seats are allocated.</li>
+                            </ul>
+                        </li>
+                        <li>Within each party's allocation:
+                            <ul>
+                                <li>(a) Each party shall determine which of its candidates fill the allocated seats;</li>
+                                <li>(b) Parties are strongly encouraged to consider:
+                                    <ul>
+                                        <li>(i) Geographic representation across all regions of the United Kingdom;</li>
+                                        <li>(ii) Demographic diversity including but not limited to gender, ethnicity, age, and socioeconomic background;</li>
+                                    </ul>
+                                </li>
+                                <li>(c) Parties must publish their selection criteria and process prior to the election;</li>
+                                <li>(d) The Electoral Commission shall monitor and report on parties' adherence to representation principles.</li>
+                            </ul>
+                        </li>
+                        <li>A minimum threshold of 3% of total approvals shall be required for a party to receive any seats.</li>
+                    </ol>
+
+                    <h5>Section 3: Transitional Provisions</h5>
+                    <p class="legal-quote">"The Fair Share Voting system shall:</p>
+                    <ol class="legal-list">
+                        <li>Be implemented at the next general election following Royal Assent;</li>
+                        <li>Be reviewed by an independent commission after two general elections;</li>
+                        <li>Not require a referendum, as it is distinct from the Alternative Vote system rejected in 2011.</li>
+                    </ol>
+                </div>
+
+                <h3>Key Distinctions from Alternative Vote</h3>
+                <div class="distinction-box">
+                    <p><strong>Fair Share Voting (Approval-based):</strong></p>
+                    <ul>
+                        <li>Voters approve multiple candidates equally</li>
+                        <li>No ranking or preference ordering</li>
+                        <li>Simple to understand and count</li>
+                        <li>Reduces tactical voting</li>
+                        <li>Proportional in multi-member districts</li>
+                    </ul>
+                    
+                    <p><strong>Alternative Vote (Ranked Choice):</strong></p>
+                    <ul>
+                        <li>Voters rank candidates in order</li>
+                        <li>Complex preference transfers</li>
+                        <li>Can be confusing and lead to spoiled ballots</li>
+                        <li>Still enables tactical voting</li>
+                        <li>Not proportional</li>
+                    </ul>
+                </div>
+
+                <h3>Implementation Timeline</h3>
+                <div class="timeline-box">
+                    <p><strong>Year 1:</strong> Legislation passed, Boundary Commission begins constituency review</p>
+                    <p><strong>Year 2:</strong> New multi-member constituencies established, public education campaign</p>
+                    <p><strong>Year 3:</strong> Pilot elections in local authorities</p>
+                    <p><strong>Year 4:</strong> First general election under Fair Share Voting</p>
+                </div>
+            </div>
+
             <h2 class="section-header">See The Difference In Action</h2>
-            <p>Same 6 voters, same candidates, dramatically different results.</p>
+            <p>Same voters, same candidates, dramatically different results.</p>
+
+            <div class="ballot-controls" style="text-align: center; margin: 2rem 0; padding: 1.5rem; background: #f9f9f9; border-radius: 0.5rem;">
+                <label for="ballot-slider" style="display: block; margin-bottom: 1rem; font-weight: bold; font-size: 1.125rem;">Number of Ballots: <span id="ballot-count">6</span></label>
+                <input type="range" id="ballot-slider" min="1" max="100" value="6" style="width: 100%; max-width: 400px; height: 8px; cursor: pointer;">
+                <div style="display: flex; justify-content: space-between; max-width: 400px; margin: 0.5rem auto 0; font-size: 0.875rem; color: #666;">
+                    <span>1</span>
+                    <span>25</span>
+                    <span>50</span>
+                    <span>75</span>
+                    <span>100</span>
+                </div>
+            </div>
 
             <div class="demo-section">
                 <div class="demo-column">
@@ -428,8 +540,11 @@
     </div>
 
     <script>
+        // Global variable to track current ballot count
+        let currentBallotCount = 6;
+        
         // Simple, bulletproof JavaScript without complex operations
-        function createBallots() {
+        function createBallots(ballotCount) {
             const pluralityContainer = document.getElementById('plurality-ballots');
             const approvalContainer = document.getElementById('approval-ballots');
 
@@ -440,7 +555,7 @@
 
             // Create plurality ballots
             pluralityContainer.innerHTML = '';
-            for (let voter = 1; voter <= 6; voter++) {
+            for (let voter = 1; voter <= ballotCount; voter++) {
                 let ballotHTML = '<div class="ballot"><h4>Voter ' + voter + '</h4>';
                 for (let i = 0; i < candidates.length; i++) {
                     ballotHTML += '<div class="candidate-option">';
@@ -454,7 +569,7 @@
 
             // Create approval ballots
             approvalContainer.innerHTML = '';
-            for (let voter = 1; voter <= 6; voter++) {
+            for (let voter = 1; voter <= ballotCount; voter++) {
                 let ballotHTML = '<div class="ballot"><h4>Voter ' + voter + '</h4>';
                 for (let i = 0; i < candidates.length; i++) {
                     ballotHTML += '<div class="candidate-option">';
@@ -467,6 +582,93 @@
             }
         }
 
+        // Function to randomly assign votes to a ballot
+        function assignRandomVotes(voterNumber) {
+            const candidateKeys = ['reform-uk', 'conservative', 'liberal-democrats', 'labour', 'green'];
+            
+            // Randomly select one candidate for plurality vote
+            const pluralityChoice = candidateKeys[Math.floor(Math.random() * candidateKeys.length)];
+            document.getElementById('p-' + voterNumber + '-' + pluralityChoice).checked = true;
+            
+            // Determine how many approvals to assign (70% = 1, 20% = 2, 10% = 3)
+            let numApprovals;
+            const rand = Math.random();
+            if (rand < 0.7) {
+                numApprovals = 1;
+            } else if (rand < 0.9) {
+                numApprovals = 2;
+            } else {
+                numApprovals = 3;
+            }
+            
+            // Shuffle candidates and select the first numApprovals
+            const shuffledCandidates = [...candidateKeys];
+            for (let i = shuffledCandidates.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledCandidates[i], shuffledCandidates[j]] = [shuffledCandidates[j], shuffledCandidates[i]];
+            }
+            
+            // Assign approval votes
+            for (let i = 0; i < numApprovals; i++) {
+                document.getElementById('a-' + voterNumber + '-' + shuffledCandidates[i]).checked = true;
+            }
+        }
+        
+
+        
+        // Function to save current vote state
+        function saveCurrentVotes() {
+            const votes = {
+                plurality: {},
+                approval: {}
+            };
+            
+            for (let voter = 1; voter <= currentBallotCount; voter++) {
+                // Save plurality votes
+                const pluralityChecked = document.querySelector('input[name="plurality-' + voter + '"]:checked');
+                if (pluralityChecked) {
+                    votes.plurality[voter] = pluralityChecked.value;
+                }
+                
+                // Save approval votes
+                votes.approval[voter] = [];
+                const candidateKeys = ['reform-uk', 'conservative', 'liberal-democrats', 'labour', 'green'];
+                candidateKeys.forEach(candidate => {
+                    const checkbox = document.getElementById('a-' + voter + '-' + candidate);
+                    if (checkbox && checkbox.checked) {
+                        votes.approval[voter].push(candidate);
+                    }
+                });
+            }
+            
+            return votes;
+        }
+        
+        // Function to restore saved votes
+        function restoreVotes(savedVotes) {
+            // Restore plurality votes
+            for (let voter in savedVotes.plurality) {
+                const radio = document.getElementById('p-' + voter + '-' + savedVotes.plurality[voter]);
+                if (radio) radio.checked = true;
+            }
+            
+            // Restore approval votes
+            for (let voter in savedVotes.approval) {
+                savedVotes.approval[voter].forEach(candidate => {
+                    const checkbox = document.getElementById('a-' + voter + '-' + candidate);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+        }
+        
+        // Function to update ballot count display
+        function updateBallotCount() {
+            const countElement = document.getElementById('ballot-count');
+            if (countElement) {
+                countElement.textContent = currentBallotCount;
+            }
+        }
+        
         function setDemoScenario() {
             resetAllBallots();
 
@@ -474,34 +676,32 @@
             // Voter preferences that might lead to a proportional outcome.
 
             // Plurality Votes (tactical voting is common)
-            document.getElementById('p-1-green').checked = true; // Votes Labour to stop Conservatives
-            document.getElementById('p-2-labour').checked = true; // Votes Labour to stop Conservatives
-            document.getElementById('p-3-conservative').checked = true;
-            document.getElementById('p-4-conservative').checked = true;
-            document.getElementById('p-5-liberal-democrats').checked = true; // Votes for their first choice
-            document.getElementById('p-6-labour').checked = true; // Votes for their first choice
+            if (document.getElementById('p-1-green')) document.getElementById('p-1-green').checked = true;
+            if (document.getElementById('p-2-labour')) document.getElementById('p-2-labour').checked = true;
+            if (document.getElementById('p-3-conservative')) document.getElementById('p-3-conservative').checked = true;
+            if (document.getElementById('p-4-conservative')) document.getElementById('p-4-conservative').checked = true;
+            if (document.getElementById('p-5-liberal-democrats')) document.getElementById('p-5-liberal-democrats').checked = true;
+            if (document.getElementById('p-6-labour')) document.getElementById('p-6-labour').checked = true;
 
             // Approval Votes (express true preferences)
             // 2 Labour-Green voters
-            document.getElementById('a-1-labour').checked = true;
-            document.getElementById('a-1-green').checked = true;
-            document.getElementById('a-2-liberal-democrats').checked = true;
-            document.getElementById('a-2-labour').checked = true;
+            if (document.getElementById('a-1-labour')) document.getElementById('a-1-labour').checked = true;
+            if (document.getElementById('a-1-green')) document.getElementById('a-1-green').checked = true;
+            if (document.getElementById('a-2-liberal-democrats')) document.getElementById('a-2-liberal-democrats').checked = true;
+            if (document.getElementById('a-2-labour')) document.getElementById('a-2-labour').checked = true;
             // 2 Conservative-Reform voters
-            document.getElementById('a-3-conservative').checked = true;
-            document.getElementById('a-3-reform-uk').checked = true;
-            document.getElementById('a-4-conservative').checked = true;
-            document.getElementById('a-4-liberal-democrats').checked = true;
+            if (document.getElementById('a-3-conservative')) document.getElementById('a-3-conservative').checked = true;
+            if (document.getElementById('a-3-reform-uk')) document.getElementById('a-3-reform-uk').checked = true;
+            if (document.getElementById('a-4-conservative')) document.getElementById('a-4-conservative').checked = true;
+            if (document.getElementById('a-4-liberal-democrats')) document.getElementById('a-4-liberal-democrats').checked = true;
             // 1 Lib Dem-Green-Labour voter
-            document.getElementById('a-5-liberal-democrats').checked = true;
-            document.getElementById('a-5-green').checked = true;
-            document.getElementById('a-5-labour').checked = true;
+            if (document.getElementById('a-5-liberal-democrats')) document.getElementById('a-5-liberal-democrats').checked = true;
+            if (document.getElementById('a-5-green')) document.getElementById('a-5-green').checked = true;
+            if (document.getElementById('a-5-labour')) document.getElementById('a-5-labour').checked = true;
             // 1 Reform-Conservative-Lib Dem voter
-            document.getElementById('a-6-reform-uk').checked = true;
-            document.getElementById('a-6-green').checked = true;
-            document.getElementById('a-6-labour').checked = true;
-
-
+            if (document.getElementById('a-6-reform-uk')) document.getElementById('a-6-reform-uk').checked = true;
+            if (document.getElementById('a-6-green')) document.getElementById('a-6-green').checked = true;
+            if (document.getElementById('a-6-labour')) document.getElementById('a-6-labour').checked = true;
 
             updateResults();
         }
@@ -514,7 +714,7 @@
         function updatePluralityResults() {
             const votes = { 'reform-uk': 0, conservative: 0, 'liberal-democrats': 0, labour: 0, green: 0 };
 
-            for (let i = 1; i <= 6; i++) {
+            for (let i = 1; i <= currentBallotCount; i++) {
                 const checked = document.querySelector('input[name="plurality-' + i + '"]:checked');
                 if (checked) {
                     votes[checked.value]++;
@@ -528,7 +728,7 @@
             const votes = { 'reform-uk': 0, conservative: 0, 'liberal-democrats': 0, labour: 0, green: 0 };
             const candidates = ['reform-uk', 'conservative', 'liberal-democrats', 'labour', 'green'];
 
-            for (let i = 1; i <= 6; i++) {
+            for (let i = 1; i <= currentBallotCount; i++) {
                 for (let j = 0; j < candidates.length; j++) {
                     const checkbox = document.getElementById('a-' + i + '-' + candidates[j]);
                     if (checkbox && checkbox.checked) {
@@ -566,7 +766,7 @@
 
             candidates.forEach(candidate => {
                 const voteCount = votes[candidate.key];
-                const barWidth = voteCount > 0 ? (voteCount / 6) * 100 : 0;
+                const barWidth = voteCount > 0 ? (voteCount / currentBallotCount) * 100 : 0;
                 html += `<div class="result-bar"><div class="bar ${candidate.class}" style="width: ${barWidth}%;"></div><div class="bar-text">${candidate.name}: ${voteCount}</div></div>`;
             });
 
@@ -826,9 +1026,9 @@
             const graphicHeight = graphicWidth / 2;
             const { seatRadius, rowHeight, sectionGap } = options;
             
-            // Use less than full semi-circle for better centering (like real parliaments)
-            const startRad = Math.PI * 0.15; // Start at 15% of semi-circle
-            const endRad = Math.PI * 0.85;   // End at 85% of semi-circle
+            // Use full semi-circle
+            const startRad = 0; // Start at 0 (right side)
+            const endRad = Math.PI;   // End at PI (left side)
             
             // Add padding to ensure seats aren't cut off
             const padding = seatRadius * 2;
@@ -890,8 +1090,50 @@
 
         // Initialize when page loads
         window.addEventListener('DOMContentLoaded', function() {
-            createBallots();
+            createBallots(currentBallotCount);
             setDemoScenario();
+            
+            // Add event listener for the ballot slider
+            document.getElementById('ballot-slider').addEventListener('input', function(e) {
+                const newCount = parseInt(e.target.value);
+                const oldCount = currentBallotCount;
+                
+                if (newCount !== oldCount) {
+                    // Save current votes
+                    const savedVotes = saveCurrentVotes();
+                    
+                    currentBallotCount = newCount;
+                    createBallots(currentBallotCount);
+                    
+                    // Restore existing votes
+                    restoreVotes(savedVotes);
+                    
+                    // Add random votes to new ballots
+                    if (newCount > oldCount) {
+                        for (let i = oldCount + 1; i <= newCount; i++) {
+                            assignRandomVotes(i);
+                        }
+                    }
+                    
+                    updateBallotCount();
+                    updateResults();
+                }
+            });
+            
+            // Randomly select 3 party checkboxes
+            const allCheckboxes = document.querySelectorAll('.party-checkbox');
+            const checkboxArray = Array.from(allCheckboxes);
+            
+            // Shuffle the array
+            for (let i = checkboxArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [checkboxArray[i], checkboxArray[j]] = [checkboxArray[j], checkboxArray[i]];
+            }
+            
+            // Check the first 3 checkboxes
+            for (let i = 0; i < 3 && i < checkboxArray.length; i++) {
+                checkboxArray[i].checked = true;
+            }
         });
     </script>
 

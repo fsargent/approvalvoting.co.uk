@@ -679,14 +679,11 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    margin: 2rem 0;
+    margin: 2rem auto;
+    max-width: 500px;
 }
 
-@media (min-width: 48rem) {
-    .ballot-example {
-        flex-direction: row;
-    }
-}
+
 
 .ballot-part {
     flex: 1;
@@ -709,6 +706,20 @@ body {
 .party-list li, .candidate-list li {
     padding: 0.5rem 0;
     font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.party-checkbox, .candidate-checkbox {
+    margin-right: 0.75rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+}
+
+.party-list label, .candidate-list label {
+    cursor: pointer;
+    flex: 1;
 }
 
 .candidate-approval {
@@ -716,6 +727,13 @@ body {
     padding: 1rem;
     border-radius: 0.25rem;
     border: 1px solid var(--border-color);
+}
+
+.hint {
+    color: var(--approval-color);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-top: 0.5rem;
 }
 
 .allocation-steps {
@@ -803,10 +821,37 @@ body {
     margin-top: 0;
 }
 
-.pav-benefits ul {
-    margin: 0;
-    padding-left: 1.5rem;
-}
+    .pav-benefits ul {
+        margin: 0;
+        padding-left: 1.5rem;
+    }
+
+    .spav-explanation {
+        background: var(--highlight-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .spav-explanation h4 {
+        color: var(--text-color);
+        margin: 0 0 0.75rem 0;
+        font-size: 1.1rem;
+    }
+
+    .spav-explanation p {
+        margin: 0 0 0.75rem 0;
+    }
+
+    .spav-explanation ul {
+        margin: 0;
+        padding-left: 1.5rem;
+    }
+
+    .spav-explanation li {
+        margin: 0.5rem 0;
+    }
 
 .pav-benefits li {
     margin-bottom: 0.75rem;
@@ -834,6 +879,8 @@ body {
     border: 2px solid var(--border-color);
     border-radius: 0.5rem;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .comparison-item h3 {
@@ -847,6 +894,7 @@ body {
 .comparison-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    flex: 1;
 }
 
 @media (max-width: 47.9375rem) {
@@ -857,6 +905,8 @@ body {
 
 .rcv-side, .approval-side {
     padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .rcv-side {
@@ -971,4 +1021,142 @@ body {
 
 .key-takeaway p:last-child {
     margin: 0;
+}
+
+/* Legislative Section Styles */
+.legislative-section {
+    margin: 2rem 0;
+}
+
+.legislative-section h3 {
+    color: var(--text-color);
+    margin: 2rem 0 1rem 0;
+    font-size: 1.5rem;
+}
+
+.legislative-section h4 {
+    color: var(--text-color);
+    margin: 1.5rem 0 0.75rem 0;
+    font-size: 1.25rem;
+}
+
+.legislative-section h5 {
+    color: var(--text-color);
+    margin: 1.25rem 0 0.5rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.definition-box {
+    background: var(--highlight-bg);
+    border: 2px solid var(--approval-color);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+.definition-box h4 {
+    margin-top: 0;
+    color: var(--approval-color);
+}
+
+.definition-box p {
+    margin-bottom: 0;
+}
+
+.legal-text {
+    background: #f8f9fa;
+    border-left: 4px solid var(--border-color);
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border-radius: 0.25rem;
+}
+
+.legal-quote {
+    font-style: italic;
+    color: #495057;
+    margin: 0.5rem 0;
+}
+
+.legal-list {
+    margin: 1rem 0 1rem 1.5rem;
+    line-height: 1.8;
+}
+
+.legal-list li {
+    margin: 0.5rem 0;
+}
+
+.legal-list ul {
+    margin: 0.5rem 0 0.5rem 1.5rem;
+    list-style-type: lower-alpha;
+}
+
+.distinction-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+}
+
+.distinction-box p {
+    margin: 0 0 0.75rem 0;
+    font-weight: 600;
+}
+
+.distinction-box ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.distinction-box li {
+    margin: 0.5rem 0;
+}
+
+.timeline-box {
+    background: var(--highlight-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+.timeline-box p {
+    margin: 0.75rem 0;
+    line-height: 1.6;
+}
+
+.timeline-box p:first-child {
+    margin-top: 0;
+}
+
+.timeline-box p:last-child {
+    margin-bottom: 0;
+}
+
+/* Mobile responsiveness for legislative section */
+@media (max-width: 47.9375rem) {
+    .distinction-box {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .legal-text {
+        padding: 1rem;
+    }
+
+    .legislative-section h3 {
+        font-size: 1.25rem;
+    }
+
+    .legislative-section h4 {
+        font-size: 1.1rem;
+    }
+
+    .legislative-section h5 {
+        font-size: 1rem;
+    }
 }
